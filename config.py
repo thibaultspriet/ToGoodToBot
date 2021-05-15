@@ -1,4 +1,5 @@
 from ToGoodApp import ToGoodApp
+import os
 
 lille_boulangerie_data = ToGoodApp.get_default_request()
 lille_boulangerie_data["origin"] = {
@@ -16,24 +17,24 @@ cergy_meal_data["item_categories"] = ["BAKED_GOODS"]
 
 
 config = {
-  "server_id" : 827850817318027275,
+  "server_id" : int(os.getenv("SERVER_ID")),
   "channels" : [
     {
-      "id" : 827902522668351519,
+      "id" : int(os.getenv("CHANNEL_LILLE_BOULANGERIE")),
       "type" : "AREA",
       "data" : {
         "request" : lille_boulangerie_data
       }
     },
     {
-      "id" : 828617517135560714,
+      "id" : int(os.getenv("CHANNEL_CERGY_MEAL")),
       "type" : "AREA",
       "data" : {
         "request" : cergy_meal_data
       }
     },
     {
-      "id" : 827927484934520852,
+      "id" : int(os.getenv("CHANNEL_LILLE_PAPILLON")) ,
       "type" : "STORE",
       "data" :
         [
