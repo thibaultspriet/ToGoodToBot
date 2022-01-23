@@ -1,7 +1,9 @@
 import discord
 from ToGoodApp import ToGoodApp
 import os
+import seleniumrequests
 from seleniumrequests import Chrome
+import selenium
 from selenium.webdriver.chrome.options import Options
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -40,7 +42,8 @@ def init():
     
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    DRIVER = Chrome(os.getenv("CHROMEDRIVER"),options=chrome_options)
+    _chromedriver_path = os.getenv("CHROMEDRIVER") if not PROD else ""
+    DRIVER = Chrome(_chromedriver_path,options=chrome_options)
     
     SCHEDULER = AsyncIOScheduler(job_defaults = {"misfire_grace_time":None})
 
