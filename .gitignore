@@ -1,3 +1,6 @@
 __pycache__
 poetry*
 pyproject*
+.env
+test.py
+.DS_STORE
