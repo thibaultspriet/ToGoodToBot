@@ -2,6 +2,7 @@ import requests
 import time
 import re
 import logging
+import pytz
 
 class ToGoodApp:
 
@@ -124,7 +125,7 @@ class ToGoodApp:
     from datetime import datetime
     url = f'{ToGoodApp.BASE_URL}user/v1/'
     headers = {"Authorization" : f'Bearer {self.access_token}'}
-    localtime=datetime.now().strftime("%H:%M:%S")
+    localtime=datetime.now(pytz.timezone("Europe/Paris")).strftime("%H:%M:%S")
     data = {
       "localtime":localtime,
       "user_id":self.user_id
