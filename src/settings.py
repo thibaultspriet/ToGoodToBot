@@ -39,8 +39,10 @@ def init():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument('--no-sandbox')
-    _chromedriver_path = os.getenv("CHROMEDRIVER") if not PROD else ""
-    DRIVER = Chrome(_chromedriver_path,options=chrome_options)
+    if PROD:
+        DRIVER = Chrome(options=chrome_options)
+    else:
+        DRIVER = Chrome(os.getenv("CHROMEDRIVER"),options=chrome_options)
     
     SCHEDULER = AsyncIOScheduler(job_defaults = {"misfire_grace_time":None})
 
