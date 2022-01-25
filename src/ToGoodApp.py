@@ -111,12 +111,30 @@ class ToGoodApp:
     headers = {"Authorization" : f'Bearer {self.access_token}'}
     json={"user_id":self.user_id,"origin":{"latitude":lat,"longitude":lon}}
     res = DRIVER.request("POST",url,headers=headers,json=json)
+    print(res.request.headers)
     if(res.status_code == 200):
       logging.info(f"successfully fetched store : {store_id}")
       return res.text
     else:
       logging.error(res.text)
       raise(Exception(f"An error occur while fetching store with id : {store_id}"))
+
+  def get_user(self):
+    from settings import DRIVER
+    from datetime import datetime
+    url = f'{ToGoodApp.BASE_URL}user/v1/'
+    headers = {"Authorization" : f'Bearer {self.access_token}'}
+    localtime=datetime.now().strftime("%H:%M:%S")
+    data = {
+      "localtime":localtime,
+      "user_id":self.user_id
+    }
+    res = DRIVER.request("POST",url,headers=headers,data=data)
+    if(res.status_code == 200):
+      return res.text
+    else:
+      logging.error(res.text)
+      raise(Exception(f"Failed to get user"))
   
     
 

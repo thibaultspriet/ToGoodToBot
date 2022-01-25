@@ -4,3 +4,5 @@ pyproject*
 .env
 test.py
 .DS_STORE
+db.txt
+req

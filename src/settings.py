@@ -1,9 +1,7 @@
 import discord
 from ToGoodApp import ToGoodApp
 import os
-import seleniumrequests
 from seleniumrequests import Chrome
-import selenium
 from selenium.webdriver.chrome.options import Options
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -32,16 +30,15 @@ def init():
         logging.info("load dot env")
         load_dotenv()
 
-    from config import config
     
 
     TOGOOD_CLIENT = ToGoodApp(os.getenv("BOT_APP_EMAIL"))
 
     MAIL_READER = Reader(os.getenv("BOT_APP_EMAIL"),os.getenv("BOT_APP_PASSWORD"))
-    MAIL_READER.authenticate()
     
     chrome_options = Options()
     chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--no-sandbox')
     _chromedriver_path = os.getenv("CHROMEDRIVER") if not PROD else ""
     DRIVER = Chrome(_chromedriver_path,options=chrome_options)
     
