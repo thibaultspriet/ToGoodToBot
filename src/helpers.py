@@ -45,29 +45,14 @@ def _login_with_email():
       f.write(f"auth_token={TOGOOD_CLIENT.access_token}\nuser_id={TOGOOD_CLIENT.user_id}")
 
 def login():
-  # if PROD:
-  #   if "auth_token" in db.keys() and "user_id" in db.keys():
-  #     TOGOOD_CLIENT.access_token = db["auth_token"]
-  #     TOGOOD_CLIENT.user_id = db["user_id"]
-  #     try:
-  #       TOGOOD_CLIENT.get_user()
-  #       print("tokens valid")
-  #     except:
-  #       _login_with_email()
-
-  #   else:
-  #     _login_with_email()
-  # else:
-  if os.path.exists("/app/src/db.txt"):
-    with open("/app/src/db.txt","r") as f:
-      lines = f.readlines()
-      TOGOOD_CLIENT.access_token = lines[0].strip().split("=")[1]
-      TOGOOD_CLIENT.user_id = lines[1].split("=")[1]
-      try:
-        TOGOOD_CLIENT.get_user()
-        print("tokens valid")
-      except:
-        _login_with_email()
+  if os.getenv("AUTH_TOKEN") and os.getenv("USER_ID"):
+    TOGOOD_CLIENT.access_token = os.getenv("AUTH_TOKEN")
+    TOGOOD_CLIENT.user_id = os.getenv("USER_ID")
+    try:
+      TOGOOD_CLIENT.get_user()
+      print("tokens valid")
+    except:
+      _login_with_email()
   else:
     _login_with_email()
 

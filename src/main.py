@@ -10,9 +10,7 @@ from settings import *
 
 from helpers import login
 
-import os
 
-print(os.getcwd())
 
 login()
 
