@@ -58,8 +58,8 @@ def login():
   #   else:
   #     _login_with_email()
   # else:
-  if os.path.exists("src/db.txt"):
-    with open("src/db.txt","r") as f:
+  if os.path.exists("/app/src/db.txt"):
+    with open("/app/src/db.txt","r") as f:
       lines = f.readlines()
       TOGOOD_CLIENT.access_token = lines[0].strip().split("=")[1]
       TOGOOD_CLIENT.user_id = lines[1].split("=")[1]
