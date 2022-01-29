@@ -10,6 +10,10 @@ from settings import *
 
 from helpers import login
 
+import os
+
+print(os.getcwd())
+
 login()
 
 @DISCORD_CLIENT.event
