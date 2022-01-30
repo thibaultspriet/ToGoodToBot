@@ -31,7 +31,7 @@ def info_to_embed(json_item):
   embed.add_field(name="Adresse", value=json_item["store_location"], inline=False)
   return embed
 
-async def _login_with_email():
+def _login_with_email():
   print("login with email")
   now = datetime.now()
   try:
@@ -41,7 +41,7 @@ async def _login_with_email():
     pin = MAIL_READER.get_pin(email)
     TOGOOD_CLIENT._authByRequestPin(pin)
   except Exception as e:
-    await alert_admin(f"error while trying to login with email\n{e}")
+    alert_admin(f"error while trying to login with email\n{e}")
   if PROD:
     url = "https://api.heroku.com/apps/togood-backend/config-vars"
     data = {"AUTH_TOKEN":TOGOOD_CLIENT.access_token,"USER_ID":TOGOOD_CLIENT.user_id}
