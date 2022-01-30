@@ -44,6 +44,10 @@ def _login_with_email():
     data = {"AUTH_TOKEN":TOGOOD_CLIENT.access_token,"USER_ID":TOGOOD_CLIENT.user_id}
     headers = {"Content-Type": "application/json","Accept": "application/vnd.heroku+json; version=3","Authorization":f"Bearer {os.getenv('HEROKU_API_TOKEN')}"}
     res = requests.patch(url,json=data,headers=headers)
+    if res.status_code == 200:
+      logging.info("Successfully updated config vars for login")
+    else:
+      logging.error(f"Failed to update config vars for login\nerror message : {res.text}")
   else:
     from settings import DOTENV_FILE
     import dotenv
@@ -60,12 +64,9 @@ def login():
     TOGOOD_CLIENT.user_id = os.getenv("USER_ID")
     try:
       TOGOOD_CLIENT.get_user()
-      print("tokens valid")
+      logging.info("tokens valid")
     except:
       _login_with_email()
   else:
     _login_with_email()
-
-  print(TOGOOD_CLIENT.access_token)
-  print(TOGOOD_CLIENT.user_id)
 

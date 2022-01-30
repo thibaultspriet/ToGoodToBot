@@ -31,15 +31,6 @@ def init():
         logging.info("load dot env")
         DOTENV_FILE = dotenv.find_dotenv()
         dotenv.load_dotenv(DOTENV_FILE)
-    else:
-        url = "https://api.heroku.com/apps/togood-backend/config-vars"
-        data = {"API_CALL_TEST":"True"}
-        headers = {"Content-Type": "application/json","Accept": "application/vnd.heroku+json; version=3","Authorization":f"Bearer {os.getenv('HEROKU_API_TOKEN')}"}
-        res = requests.patch(url,json=data,headers=headers)
-        logging.info(res.status_code)
-        logging.info(res.text)
-
-    
 
     TOGOOD_CLIENT = ToGoodApp(os.getenv("BOT_APP_EMAIL"))
 

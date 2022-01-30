@@ -25,7 +25,7 @@ class ChannelBot:
   async def send_item_store(self):
     from settings import TOGOOD_CLIENT
 
-    
+    login()
 
     data = self.config["data"]
     for store in data:
