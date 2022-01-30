@@ -3,7 +3,7 @@ import logging
 from discord import Embed
 from ToGoodApp import ToGoodApp
 import re
-from settings import MAIL_READER, TOGOOD_CLIENT, PROD
+from settings import MAIL_READER, TOGOOD_CLIENT, PROD, DISCORD_CLIENT
 from datetime import datetime
 import os
 import requests
@@ -31,14 +31,17 @@ def info_to_embed(json_item):
   embed.add_field(name="Adresse", value=json_item["store_location"], inline=False)
   return embed
 
-def _login_with_email():
+async def _login_with_email():
   print("login with email")
   now = datetime.now()
-  MAIL_READER.authenticate()
-  TOGOOD_CLIENT._authByEmail()
-  email = MAIL_READER.get_login_email(now,120,2)
-  pin = MAIL_READER.get_pin(email)
-  TOGOOD_CLIENT._authByRequestPin(pin)
+  try:
+    MAIL_READER.authenticate()
+    TOGOOD_CLIENT._authByEmail()
+    email = MAIL_READER.get_login_email(now,120,2)
+    pin = MAIL_READER.get_pin(email)
+    TOGOOD_CLIENT._authByRequestPin(pin)
+  except Exception as e:
+    await alert_admin(f"error while trying to login with email\n{e}")
   if PROD:
     url = "https://api.heroku.com/apps/togood-backend/config-vars"
     data = {"AUTH_TOKEN":TOGOOD_CLIENT.access_token,"USER_ID":TOGOOD_CLIENT.user_id}
@@ -69,4 +72,9 @@ def login():
       _login_with_email()
   else:
     _login_with_email()
+
+
+async def alert_admin(message:str,channel_id=os.getenv("ADMIN_CHANNEL")):
+  channel = DISCORD_CLIENT.get_channel(int(channel_id))
+  await channel.send(message)
 
