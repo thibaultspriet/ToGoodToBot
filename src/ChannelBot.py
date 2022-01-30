@@ -30,11 +30,12 @@ class ChannelBot:
     except Exception as e:
       await alert_admin(f"error while login\n{e}")
 
-    await alert_admin("test")
-
     data = self.config["data"]
     for store in data:
-      item_string = TOGOOD_CLIENT.fetch_store_id(store["store_id"],store["origin"]["lat"],store["origin"]["lon"])
+      try:
+        item_string = TOGOOD_CLIENT.fetch_store_id(store["store_id"],store["origin"]["lat"],store["origin"]["lon"])
+      except Exception as e:
+        await alert_admin(f"error while fetching a store\n{e}")
       item_dict = get_store_details(item_string)
       nb_items = item_dict["nb_items"]
       if nb_items == store["items"]:
