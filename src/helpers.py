@@ -32,7 +32,7 @@ def info_to_embed(json_item):
   return embed
 
 def _login_with_email():
-  print("login with email")
+  logging.info("login with email")
   now = datetime.now()
   try:
     MAIL_READER.authenticate()

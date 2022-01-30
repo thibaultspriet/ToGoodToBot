@@ -1,3 +1,4 @@
+from pytz import timezone
 from settings import init
 init()
 
@@ -9,9 +10,6 @@ from config import config
 from settings import *
 
 from helpers import login
-
-
-
 login()
 
 @DISCORD_CLIENT.event
@@ -20,10 +18,9 @@ async def on_ready():
     for channel_id in config["channels"].keys():
         bot = ChannelBot(channel_id)
         CHANNEL_BOT[channel_id]=bot
-        SCHEDULER.add_job(bot.send_item_store,"cron",second="0")
+        SCHEDULER.add_job(bot.send_item_store,"cron",second="0",hour="6-21",timezone=timezone('Europe/Paris'))
     SCHEDULER.start()
     
-
 
 @DISCORD_CLIENT.event
 async def on_message(message):

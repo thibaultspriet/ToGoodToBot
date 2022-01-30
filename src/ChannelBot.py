@@ -1,3 +1,4 @@
+import logging
 from helpers import get_store_details, info_to_embed, login, alert_admin
 import discord
 
@@ -39,7 +40,7 @@ class ChannelBot:
       item_dict = get_store_details(item_string)
       nb_items = item_dict["nb_items"]
       if nb_items == store["items"]:
-        print("no change in baskets")
+        logging.info("no change in baskets")
         return
       else:
         store["items"] = nb_items
