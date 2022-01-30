@@ -41,6 +41,7 @@ def _login_with_email():
     pin = MAIL_READER.get_pin(email)
     TOGOOD_CLIENT._authByRequestPin(pin)
   except Exception as e:
+    logging.error("error while trying to login with email\n{e}")
     alert_admin(f"error while trying to login with email\n{e}")
   if PROD:
     url = "https://api.heroku.com/apps/togood-backend/config-vars"
