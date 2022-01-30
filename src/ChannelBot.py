@@ -1,4 +1,4 @@
-from helpers import get_store_details, info_to_embed, login
+from helpers import get_store_details, info_to_embed, login, alert_admin
 import discord
 
 
@@ -25,7 +25,12 @@ class ChannelBot:
   async def send_item_store(self):
     from settings import TOGOOD_CLIENT
 
-    login()
+    try:
+      login()
+    except Exception as e:
+      await alert_admin(f"error while login\n{e}")
+
+    await alert_admin("test")
 
     data = self.config["data"]
     for store in data:

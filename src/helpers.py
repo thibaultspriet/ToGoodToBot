@@ -42,7 +42,6 @@ def _login_with_email():
     TOGOOD_CLIENT._authByRequestPin(pin)
   except Exception as e:
     logging.error(f"error while trying to login with email\n{e}")
-    alert_admin(f"error while trying to login with email\n{e}")
   if PROD:
     url = "https://api.heroku.com/apps/togood-backend/config-vars"
     data = {"AUTH_TOKEN":TOGOOD_CLIENT.access_token,"USER_ID":TOGOOD_CLIENT.user_id}
@@ -76,8 +75,6 @@ def login():
 
 
 async def alert_admin(message:str,channel_id=os.getenv("ADMIN_CHANNEL")):
-  print("alert admin")
   channel = DISCORD_CLIENT.get_channel(int(channel_id))
-  print(channel_id,channel)
   await channel.send(message)
 
