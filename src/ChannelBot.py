@@ -1,4 +1,4 @@
-from helpers import get_store_details, info_to_embed
+from helpers import get_store_details, info_to_embed, login
 import discord
 
 
@@ -24,6 +24,8 @@ class ChannelBot:
   
   async def send_item_store(self):
     from settings import TOGOOD_CLIENT
+
+    
 
     data = self.config["data"]
     for store in data:

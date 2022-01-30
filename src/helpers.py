@@ -1,10 +1,12 @@
+from email import header
+import logging
 from discord import Embed
 from ToGoodApp import ToGoodApp
 import re
 from settings import MAIL_READER, TOGOOD_CLIENT, PROD
 from datetime import datetime
-from replit import db
 import os
+import requests
 
 def get_store_details(details:str):
     info = {
@@ -38,11 +40,19 @@ def _login_with_email():
   pin = MAIL_READER.get_pin(email)
   TOGOOD_CLIENT._authByRequestPin(pin)
   if PROD:
-    db["auth_token"] = TOGOOD_CLIENT.access_token
-    db["user_id"] = TOGOOD_CLIENT.user_id
+    url = "https://api.heroku.com/apps/togood-backend/config-vars"
+    data = {"AUTH_TOKEN":TOGOOD_CLIENT.access_token,"USER_ID":TOGOOD_CLIENT.user_id}
+    headers = {"Content-Type": "application/json","Accept": "application/vnd.heroku+json; version=3","Authorization":f"Bearer {os.getenv('HEROKU_API_TOKEN')}"}
+    res = requests.patch(url,json=data,headers=headers)
   else:
-    with open("src/db.txt","w") as f:
-      f.write(f"auth_token={TOGOOD_CLIENT.access_token}\nuser_id={TOGOOD_CLIENT.user_id}")
+    from settings import DOTENV_FILE
+    import dotenv
+    os.environ["AUTH_TOKEN"] = TOGOOD_CLIENT.access_token
+    os.environ["USER_ID"] = TOGOOD_CLIENT.user_id
+    # Write changes to .env file.
+    dotenv.set_key(DOTENV_FILE, "AUTH_TOKEN", os.environ["AUTH_TOKEN"])
+    dotenv.set_key(DOTENV_FILE, "USER_ID", os.environ["USER_ID"])
+
 
 def login():
   if os.getenv("AUTH_TOKEN") and os.getenv("USER_ID"):

@@ -112,7 +112,6 @@ class ToGoodApp:
     headers = {"Authorization" : f'Bearer {self.access_token}'}
     json={"user_id":self.user_id,"origin":{"latitude":lat,"longitude":lon}}
     res = DRIVER.request("POST",url,headers=headers,json=json)
-    print(res.request.headers)
     if(res.status_code == 200):
       logging.info(f"successfully fetched store : {store_id}")
       return res.text
