@@ -101,7 +101,7 @@ class ToGoodApp:
       return res.text
     else:
       logging.error(res.text)
-      raise(Exception(f"An error occur while fetching store with id : {store_id}"))
+      raise(Exception(f"An error occur while fetching store with id : {store_id}\n{res.text}"))
 
   def get_user(self):
     from settings import DRIVER
