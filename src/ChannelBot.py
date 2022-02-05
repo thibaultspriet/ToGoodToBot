@@ -41,7 +41,7 @@ class ChannelBot:
       nb_items = item_dict["nb_items"]
       if nb_items == store["items"]:
         logging.info("no change in baskets")
-        return
+        continue
       else:
         store["items"] = nb_items
         if nb_items > 0:
