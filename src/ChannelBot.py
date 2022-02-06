@@ -35,17 +35,17 @@ class ChannelBot:
     for store in data:
       try:
         item_string = TOGOOD_CLIENT.fetch_store_id(store["store_id"],store["origin"]["lat"],store["origin"]["lon"])
+        item_dict = get_store_details(item_string)
+        nb_items = item_dict["nb_items"]
+        if nb_items == store["items"]:
+          logging.info("no change in baskets")
+          continue
+        else:
+          store["items"] = nb_items
+          if nb_items > 0:
+            embed = info_to_embed(item_dict)
+          else:
+            embed = discord.Embed(title=f"Panier {item_dict['store_name']}", description="Tu as raté ta chance ... il n'y a plus de paniers disponibles", color=0xe32400)
+          await self.channel.send(embed = embed)
       except Exception as e:
         await alert_admin(f"error while fetching a store\n{e}")
-      item_dict = get_store_details(item_string)
-      nb_items = item_dict["nb_items"]
-      if nb_items == store["items"]:
-        logging.info("no change in baskets")
-        continue
-      else:
-        store["items"] = nb_items
-        if nb_items > 0:
-          embed = info_to_embed(item_dict)
-        else:
-          embed = discord.Embed(title=f"Panier {item_dict['store_name']}", description="Tu as raté ta chance ... il n'y a plus de paniers disponibles", color=0xe32400)
-        await self.channel.send(embed = embed)
